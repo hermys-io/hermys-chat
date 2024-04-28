@@ -2,7 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { ChatMessage } from "./chatMessage";
+import { ChatMessage } from "./chat-message";
 import { ScrollArea } from "../ui/scroll-area";
 
 const chatHeaderVariants = cva(

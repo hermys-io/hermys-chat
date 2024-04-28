@@ -1,6 +1,6 @@
-import { ChatBody } from "@/components/chat/chatBody";
-import { ChatFooter } from "@/components/chat/chatFooter";
-import { ChatHeader } from "@/components/chat/chatHeader";
+import { ChatBody } from "@/components/chat/chat-body";
+import { ChatFooter } from "@/components/chat/chat-footer";
+import { ChatHeader } from "@/components/chat/chat-header";
 
 export default function Home() {
   return (
