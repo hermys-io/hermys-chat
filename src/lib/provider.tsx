@@ -2,6 +2,8 @@
 
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
+import { Provider as JotaiProvider, createStore } from "jotai";
+import { useState } from "react";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.POSTHOG_KEY!, {
@@ -16,7 +18,13 @@ interface ProviderProps {
 const Provider = (props: ProviderProps) => {
   const { children } = props;
 
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+  const [store] = useState(() => createStore());
+
+  return (
+    <PostHogProvider client={posthog}>
+      <JotaiProvider store={store}>{children}</JotaiProvider>
+    </PostHogProvider>
+  );
 };
 
 export default Provider;

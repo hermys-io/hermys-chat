@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const chatMessageVariants = cva(
-  "flex items-center min-h-9 max-w-[80%] px-4 py-3 rounded-2xl text-xs",
+  "flex items-center min-h-9 max-w-[80%] px-4 py-3 rounded-2xl text-xs animate-fade-in",
   {
     variants: {
       variant: {
@@ -36,4 +36,3 @@ const ChatMessage = (props: ChatMessageProps) => {
 };
 
 export { ChatMessage, chatMessageVariants };
-

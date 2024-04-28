@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -5,6 +7,9 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ArrowLeft as ArrowLeftIcon } from "lucide-react";
 import { ChatThemeSelecter } from "./chat-theme-selecter";
+import { useAtomValue } from "jotai";
+import { chatState } from "@/store/chat";
+import { type ChatStateProps } from "@/lib/chat";
 
 const chatHeaderVariants = cva(
   "flex justify-between w-full min-h-20 px-6 shadow z-10"
@@ -16,6 +21,29 @@ export interface ChatHeaderProps
 
 const ChatHeader = (props: ChatHeaderProps) => {
   const { className, ...rest } = props;
+
+  const currentChatState = useAtomValue(chatState);
+
+  const getChatStatePlaceholder = (state: ChatStateProps) => {
+    switch (state) {
+      case "online":
+        return <p className="text-xs text-muted-foreground">Online</p>;
+      case "reading":
+        return <p className="text-xs text-muted-foreground">Online</p>;
+      case "typing":
+        return (
+          <p className="text-xs text-muted-foreground animate-pulse">
+            digitando...
+          </p>
+        );
+      case "breathe":
+        return (
+          <p className="text-xs text-muted-foreground animate-fade-in">
+            Online
+          </p>
+        );
+    }
+  };
 
   return (
     <section className={cn(chatHeaderVariants({ className }))} {...rest}>
@@ -33,7 +61,8 @@ const ChatHeader = (props: ChatHeaderProps) => {
 
         <div className="flex gap-0 flex-col">
           <h1 className="text-base font-medium">Hermys</h1>
-          <p className="text-xs text-muted-foreground">Online</p>
+          {/* <ChatHeaderStatus label={currentChatState} /> */}
+          {getChatStatePlaceholder(currentChatState)}
         </div>
       </div>
 
@@ -45,3 +74,11 @@ const ChatHeader = (props: ChatHeaderProps) => {
 };
 
 export { ChatHeader, chatHeaderVariants };
+
+const ChatHeaderStatus = ({ label }: { label: string }) => {
+  return (
+    <p className="text-xs text-muted-foreground animate-fade-in repeat-infinite">
+      {label}
+    </p>
+  );
+};
