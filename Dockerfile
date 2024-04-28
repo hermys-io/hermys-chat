@@ -3,6 +3,10 @@ FROM node:20-slim as base_image
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
+# Env variables
+ARG POSTHOG_KEY
+ARG POSTHOG_HOST
+
 RUN corepack enable
 
 COPY . /app
