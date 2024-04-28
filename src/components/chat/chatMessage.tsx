@@ -6,7 +6,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const chatMessageVariants = cva(
-  "flex items-center min-h-9 ml-auto px-4 rounded-2xl rounded-tr-none bg-primary text-primary-foreground text-xs"
+  "flex items-center min-h-9 max-w-[80%] px-4 py-3 rounded-2xl text-xs",
+  {
+    variants: {
+      variant: {
+        left: "ml-auto bg-primary rounded-tr-none text-primary-foreground",
+        right: "mr-auto bg-accent rounded-tl-none text-accent-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "left",
+    },
+  }
 );
 
 export interface ChatMessageProps
@@ -14,9 +25,15 @@ export interface ChatMessageProps
     VariantProps<typeof chatMessageVariants> {}
 
 const ChatMessage = (props: ChatMessageProps) => {
-  const { className, ...rest } = props;
+  const { className, variant, ...rest } = props;
 
-  return <div className={cn(chatMessageVariants({ className }))} {...rest} />;
+  return (
+    <div
+      className={cn(chatMessageVariants({ variant, className }))}
+      {...rest}
+    />
+  );
 };
 
 export { ChatMessage, chatMessageVariants };
+
