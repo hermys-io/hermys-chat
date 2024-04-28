@@ -17,7 +17,7 @@ const formSchema = z.object({
 });
 
 const chatFooterVariants = cva(
-  "flex gap-3 w-full min-h-20 items-center px-6 bg-background border-t-2 border-muted"
+  "flex gap-3 w-full min-h-20 items-center px-6 bg-background border-t-2 border-muted z-10"
 );
 
 export interface ChatFootProps
