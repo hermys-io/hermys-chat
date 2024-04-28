@@ -23,7 +23,11 @@ const ChatHeader = (props: ChatHeaderProps) => {
         <ArrowLeftIcon />
 
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          {/* TODO: Pegar alt da resposta da API */}
+          <AvatarImage
+            alt="AI profile photo"
+            src="https://github.com/shadcn.png"
+          />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
 

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -51,13 +51,22 @@ const ChatFooter = (props: ChatFootProps) => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input className="w-full h-10" {...field} />
+                  <Input
+                    aria-label="Menssagem"
+                    className="w-full h-10"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
 
-          <Button type="submit" shape={"rounded"} className="w-10 h-10 p-3">
+          <Button
+            type="submit"
+            shape={"rounded"}
+            className="w-10 h-10 p-3"
+            aria-label="Send message"
+          >
             <SendHorizonalIcon />
           </Button>
         </form>
