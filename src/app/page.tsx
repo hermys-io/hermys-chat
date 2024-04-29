@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <main className="w-full h-screen flex flex-col bg-background">
+    <main className="w-full h-svh flex flex-col bg-background">
       <ChatHeader />
       <ChatBody />
       <Suspense>
