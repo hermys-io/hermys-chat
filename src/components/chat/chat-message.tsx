@@ -29,6 +29,7 @@ const ChatMessage = (props: ChatMessageProps) => {
 
   return (
     <div
+      style={{ overflowAnchor: "none" }}
       className={cn(chatMessageVariants({ variant, className }))}
       {...rest}
     />
