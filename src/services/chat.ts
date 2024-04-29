@@ -1,6 +1,7 @@
 export const fetchChatId = async () => {
   const res = await fetch(
     "https://api.hermys.io/api/chat/select-event-support?event_id=1",
+    // "http://localhost:8000/api/chat/select-event-support?event_id=1",
     {
       method: "POST",
     }
@@ -23,6 +24,7 @@ export const askToAI = async (chatId: string, message: string) => {
   const params = searchParams.toString();
 
   const url = `https://api.hermys.io/api/chat/send-message?${params}`;
+  // const url = `http://localhost:8000/api/chat/send-message?${params}`;
 
   const res = await fetch(url, {
     method: "POST",
