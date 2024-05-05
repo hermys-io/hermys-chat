@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ChatMessageProps, getReadingDelay, getTypingDelay } from "@/lib/chat";
 import { useAtom, useSetAtom } from "jotai";
-import { chatHistory, chatState } from "@/store/chat";
+import { chatHistory, chatState, selectedChat } from "@/store/chat";
 import { useQueryState, parseAsString } from "nuqs";
 import { useEffect } from "react";
 import { askToAI, fetchChatId } from "@/services/chat";
@@ -27,15 +27,16 @@ const chatFooterVariants = cva(
 
 export interface ChatFootProps
   extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof chatFooterVariants> {}
+    VariantProps<typeof chatFooterVariants> {
+  sessionId: string;
+}
 
 const ChatFooter = (props: ChatFootProps) => {
-  const { className, ...rest } = props;
+  const { sessionId, className, ...rest } = props;
 
   const [currentChatState, setCurrentChatState] = useAtom(chatState);
   const setCurrentChatHistory = useSetAtom(chatHistory);
-
-  const [chatId, setChatId] = useQueryState("chat", parseAsString);
+  const [currentSelectedChat, setCurrentSelectedChat] = useAtom(selectedChat);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,16 +46,21 @@ const ChatFooter = (props: ChatFootProps) => {
   });
 
   const response = async (question: string) => {
-    if (!chatId) return;
+    if (currentSelectedChat === "") return;
 
     // Lendo
     setCurrentChatState("reading");
-    const responseFromAPI: ChatMessageProps[] = await askToAI(chatId, question);
+    const responseFromAPI: ChatMessageProps = await askToAI(
+      question,
+      currentSelectedChat,
+      sessionId
+    );
+    const responseFromAPIList = [responseFromAPI];
     const readinTime = getReadingDelay(question);
     await waitForTime(readinTime);
 
     // Digitando resposta
-    for (const q of responseFromAPI) {
+    for (const q of responseFromAPIList) {
       setCurrentChatState("typing");
       const typingTime = getTypingDelay(q.content);
       await waitForTime(typingTime);
@@ -84,18 +90,8 @@ const ChatFooter = (props: ChatFootProps) => {
     response(values.message);
   }
 
-  const formIsDisabled = currentChatState !== "online" || chatId === null;
-
-  useEffect(() => {
-    const getChatId = async () => {
-      const chat = await fetchChatId();
-      setChatId(chat.id as string);
-    };
-
-    if (!chatId) {
-      getChatId();
-    }
-  }, [chatId]);
+  const formIsDisabled =
+    currentChatState !== "online" || currentSelectedChat === "";
 
   return (
     <section className={cn(chatFooterVariants({ className }))} {...rest}>

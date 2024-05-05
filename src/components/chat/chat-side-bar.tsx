@@ -1,0 +1,164 @@
+"use client";
+import { Button } from "../ui/button";
+import { AirplayIcon, MessageSquarePlusIcon } from "lucide-react";
+import { Input } from "../ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useEffect, useState } from "react";
+import { listEditais } from "@/services/chat";
+import { Edital } from "@/lib/chat";
+import { useAtom } from "jotai";
+import { chatHistory, selectedChat } from "@/store/chat";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+interface ChatSideBarProps {
+  clerkId: string;
+}
+
+export default function ChatSideBar(props: ChatSideBarProps) {
+  const { clerkId } = props;
+
+  const [editais, setEditais] = useState<Edital[]>([]);
+  const [currentSelectedChat, setCurrentSelectedChat] = useAtom(selectedChat);
+  const [currentChatHistory, setCurrentChatHistory] = useAtom(chatHistory);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const result = await listEditais(clerkId);
+      setEditais(result);
+    };
+
+    fetch();
+  }, [clerkId]);
+
+  return (
+    <>
+      <header className="flex flex-col items-center w-16 h-full pt-4 gap-4 bg-primary">
+        <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
+          <AirplayIcon size={20} />
+        </Button>
+        <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
+          <AirplayIcon size={20} />
+        </Button>
+        <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
+          <AirplayIcon size={20} />
+        </Button>
+      </header>
+
+      <div className="flex flex-col gap-6 w-[300px] h-full pt-4 px-4 bg-secondary">
+        {/* Header */}
+        <div className="flex justify-between items-center text-secondary-foreground">
+          <div className="text-2xl text-bold font-bold">Chats</div>
+          <div className="flex items-center">
+            <Button
+              className="p-0 w-[24] h-[24]"
+              variant="ghost"
+              onClick={() => {}}
+            >
+              <MessageSquarePlusIcon size={24} />
+            </Button>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div>
+          <Input />
+        </div>
+
+        {/* Active chats */}
+        <div className="flex flex-col gap-4 w-full">
+          {editais.map((edital) => (
+            <div
+              key={edital.id}
+              onClick={() => {
+                setCurrentChatHistory([]);
+                setCurrentSelectedChat(edital.id);
+              }}
+            >
+              <ChatItem data={edital} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+interface CreateDialogProps {
+  children?: React.ReactNode;
+}
+
+const CreateDialog = (props: CreateDialogProps) => {
+  const { children } = props;
+
+  const [editais, setEditais] = useState<Edital[]>([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const result = await listEditais("66369969fc3b65b2f4c7f7e0");
+      setEditais(result);
+    };
+
+    fetch();
+  }, []);
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Iniciar conversa</DialogTitle>
+          <DialogDescription>
+            Selecioane o edital para iniciar a conversa
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex flex-col gap-6 mt-6">
+          {editais.map((edital) => (
+            <ChatItem key={edital.id} data={edital} />
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+interface ChatItemProps {
+  data: Edital;
+}
+
+const ChatItem = (props: ChatItemProps) => {
+  const { data } = props;
+
+  const getStatus = (status: string) => {
+    if (status === "in_progress") return "Em andamento";
+    return "";
+  };
+
+  return (
+    <div className="flex gap-3 w-full cursor-pointer">
+      <div className="flex items-center justify-center min-w-12 min-h-12 rounded-full bg-primary">
+        <Avatar>
+          {/* TODO: Pegar alt da resposta da API */}
+          <AvatarImage
+            alt="AI profile photo"
+            src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Bras%C3%A3o_Salgueiro.png"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      </div>
+      <div className="flex flex-col grow gap-[2px] border-b-2 overflow-hidden">
+        <span className="truncate">{data.name}</span>
+        <span className="text-sm text-muted-foreground truncate">
+          {getStatus(data.status)}
+        </span>
+      </div>
+    </div>
+  );
+};

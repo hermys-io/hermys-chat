@@ -6,6 +6,17 @@ export type ChatMessageProps = {
   role: "assistent" | "user";
 };
 
+export type Edital = {
+  name: string;
+  url: string;
+  status: string;
+  active: boolean;
+  clerk: string;
+  created_at: Date;
+  updated_at: Date;
+  id: string;
+};
+
 export const getTypingDelay = (text: string, wpm: number = 300): number => {
   const numWords = text.split(" ").length;
   const timeInMinutes = numWords / wpm;
