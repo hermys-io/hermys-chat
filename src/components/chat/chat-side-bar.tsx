@@ -31,9 +31,18 @@ export default function ChatSideBar(props: ChatSideBarProps) {
   const [search, setSearch] = useState("");
 
   const getFilteredData = (data: Edital[]) => {
-    return data.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase())
-    );
+    return data.filter((item) => {
+      const nameNormalized = item.name
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036F]/g, "");
+      const searchNormalized = search
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036F]/g, "");
+
+      return nameNormalized.includes(searchNormalized);
+    });
   };
 
   useEffect(() => {
@@ -166,7 +175,7 @@ const ChatItem = (props: ChatItemProps) => {
           {/* TODO: Pegar alt da resposta da API */}
           <AvatarImage
             alt="AI profile photo"
-            src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Bras%C3%A3o_Salgueiro.png"
+            src="https://raw.githubusercontent.com/pierrelapalu/icones-bandeiras-br-uf/master/dist/square-rounded/png-200/18-pernambuco-square-rounded.png"
           />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>

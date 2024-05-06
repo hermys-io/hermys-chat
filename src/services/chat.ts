@@ -1,24 +1,7 @@
 import { Edital } from "@/lib/chat";
 
 const BASE_URL = "https://hermys-api-production.up.railway.app/api";
-
-export const fetchChatId = async () => {
-  const res = await fetch(
-    "https://api.hermys.io/api/chat/select-event-support?event_id=1",
-    // "http://localhost:8000/api/chat/select-event-support?event_id=1",
-    {
-      method: "POST",
-    }
-  );
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  const data = await res.json();
-  return data;
-};
+// const BASE_URL = "http://localhost:8000/api";
 
 export const askToAI = async (
   question: string,

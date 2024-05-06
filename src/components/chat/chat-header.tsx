@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ArrowLeft as ArrowLeftIcon } from "lucide-react";
 import { ChatThemeSelecter } from "./chat-theme-selecter";
-import { useAtomValue } from "jotai";
-import { chatState } from "@/store/chat";
+import { useAtomValue, useSetAtom } from "jotai";
+import { chatState, selectedChat } from "@/store/chat";
 import { type ChatStateProps } from "@/lib/chat";
 
 const chatHeaderVariants = cva(
@@ -23,6 +23,11 @@ const ChatHeader = (props: ChatHeaderProps) => {
   const { className, ...rest } = props;
 
   const currentChatState = useAtomValue(chatState);
+  const setCurrentSelectedChat = useSetAtom(selectedChat);
+
+  const onGoBack = () => {
+    setCurrentSelectedChat("");
+  };
 
   const getChatStatePlaceholder = (state: ChatStateProps) => {
     switch (state) {
@@ -48,7 +53,7 @@ const ChatHeader = (props: ChatHeaderProps) => {
   return (
     <section className={cn(chatHeaderVariants({ className }))} {...rest}>
       <div className="flex flex-row gap-2 items-center">
-        <ArrowLeftIcon />
+        <ArrowLeftIcon onClick={onGoBack} className="cursor-pointer" />
 
         <Avatar>
           {/* TODO: Pegar alt da resposta da API */}
@@ -61,7 +66,6 @@ const ChatHeader = (props: ChatHeaderProps) => {
 
         <div className="flex gap-0 flex-col">
           <h1 className="text-base font-medium">Hermys</h1>
-          {/* <ChatHeaderStatus label={currentChatState} /> */}
           {getChatStatePlaceholder(currentChatState)}
         </div>
       </div>
