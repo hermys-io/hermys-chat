@@ -31,7 +31,9 @@ export default function ChatSideBar(props: ChatSideBarProps) {
   const [search, setSearch] = useState("");
 
   const getFilteredData = (data: Edital[]) => {
-    return data.filter((item) => item.name.includes(search));
+    return data.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
   };
 
   useEffect(() => {
