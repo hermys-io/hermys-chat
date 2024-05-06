@@ -7,15 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ChatMessageProps, getReadingDelay, getTypingDelay } from "@/lib/chat";
 import { useAtom, useSetAtom } from "jotai";
 import { chatHistory, chatState, selectedChat } from "@/store/chat";
-import { useQueryState, parseAsString } from "nuqs";
-import { useEffect } from "react";
-import { askToAI, fetchChatId } from "@/services/chat";
+import { askToAI } from "@/services/chat";
 
 const formSchema = z.object({
   message: z.string().min(2),
