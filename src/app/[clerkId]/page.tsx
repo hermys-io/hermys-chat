@@ -1,6 +1,7 @@
 "use client";
 
 import { ChatBody } from "@/components/chat/chat-body";
+import ChatBodyEmptystate from "@/components/chat/chat-body-empty-state";
 import { ChatFooter } from "@/components/chat/chat-footer";
 import { ChatHeader } from "@/components/chat/chat-header";
 import ChatSideBar from "@/components/chat/chat-side-bar";
@@ -47,7 +48,9 @@ export default function Home(props: HomePageProps) {
             <ChatFooter sessionId={sessionId} />
           </Suspense>
         </div>
-      ) : null}
+      ) : (
+        <ChatBodyEmptystate />
+      )}
     </main>
   );
 }
