@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "../ui/button";
-import { AirplayIcon, MessageSquarePlusIcon } from "lucide-react";
+import { AirplayIcon, MessageSquarePlusIcon, SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import {
   Dialog,
@@ -16,6 +16,7 @@ import { Edital } from "@/lib/chat";
 import { useAtom } from "jotai";
 import { chatHistory, selectedChat } from "@/store/chat";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 interface ChatSideBarProps {
   clerkId: string;
 }
@@ -26,6 +27,12 @@ export default function ChatSideBar(props: ChatSideBarProps) {
   const [editais, setEditais] = useState<Edital[]>([]);
   const [currentSelectedChat, setCurrentSelectedChat] = useAtom(selectedChat);
   const [currentChatHistory, setCurrentChatHistory] = useAtom(chatHistory);
+
+  const [search, setSearch] = useState("");
+
+  const getFilteredData = (data: Edital[]) => {
+    return data.filter((item) => item.name.includes(search));
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -66,13 +73,22 @@ export default function ChatSideBar(props: ChatSideBarProps) {
         </div>
 
         {/* Search */}
-        <div>
-          <Input />
+        <div className="relative">
+          <SearchIcon
+            className="absolute top-[50%] left-[12px]  translate-y-[-50%]"
+            size={20}
+          />
+          <Input
+            className="pl-10"
+            placeholder="Pesquisar"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
 
         {/* Active chats */}
         <div className="flex flex-col gap-4 w-full">
-          {editais.map((edital) => (
+          {getFilteredData(editais).map((edital) => (
             <div
               key={edital.id}
               onClick={() => {
