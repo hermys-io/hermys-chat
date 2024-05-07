@@ -1,6 +1,13 @@
 "use client";
 import { Button } from "../ui/button";
-import { AirplayIcon, MessageSquarePlusIcon, SearchIcon } from "lucide-react";
+import {
+  AirplayIcon,
+  MessageSquarePlusIcon,
+  SearchIcon,
+  FileBadgeIcon,
+  FileClockIcon,
+  FileCheck2Icon,
+} from "lucide-react";
 import { Input } from "../ui/input";
 import {
   Dialog,
@@ -58,13 +65,13 @@ export default function ChatSideBar(props: ChatSideBarProps) {
     <>
       <header className="flex flex-col items-center w-16 h-full pt-4 gap-4 bg-primary">
         <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
-          <AirplayIcon size={20} />
+          <FileClockIcon size={20} />
         </Button>
         <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
-          <AirplayIcon size={20} />
+          <FileCheck2Icon size={20} />
         </Button>
         <Button className="flex items-center justify-center rounded-full p-0 w-10 h-10">
-          <AirplayIcon size={20} />
+          <FileBadgeIcon size={20} />
         </Button>
       </header>
 
