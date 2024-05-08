@@ -20,7 +20,7 @@ export default function Chat() {
   if (chatContext.editaisQuery.isLoading) return <ChatSplashScreen />;
 
   return (
-    <main className="w-full h-svh flex bg-background">
+    <main className="w-full h-svh flex bg-background overflow-hidden">
       <section className="flex w-auto h-full">
         <ChatSideBar />
       </section>

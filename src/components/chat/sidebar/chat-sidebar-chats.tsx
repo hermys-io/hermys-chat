@@ -71,7 +71,7 @@ export default function ChatSidebarCahts() {
       </div>
 
       {/* Active chats */}
-      <div className="relative flex grow flex-col w-full">
+      <div className="relative flex grow flex-col w-full overflow-hidden overflow-y-auto">
         {shouldShowDataState ? (
           <>
             {data.map((edital) => (
