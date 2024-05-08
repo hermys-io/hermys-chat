@@ -1,4 +1,4 @@
-import RemindersSVG from "../svg/reminders";
+import RemindersSVG from "../../svg/reminders";
 
 export default function ChatBodyEmptystate() {
   return (

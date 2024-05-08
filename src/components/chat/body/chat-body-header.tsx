@@ -4,12 +4,13 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { ArrowLeft as ArrowLeftIcon } from "lucide-react";
-import { ChatThemeSelecter } from "./chat-theme-selecter";
-import { useAtomValue, useSetAtom } from "jotai";
-import { chatState, selectedChat } from "@/store/chat";
+import { ChatThemeSelecter } from "../chat-theme-selecter";
+import { useAtomValue } from "jotai";
+import { chatState } from "@/store/chat";
 import { type ChatStateProps } from "@/lib/chat";
+import { useChatContext } from "@/contexts/chat";
 
 const chatHeaderVariants = cva(
   "flex justify-between w-full min-h-20 px-6 shadow z-10"
@@ -22,11 +23,14 @@ export interface ChatHeaderProps
 const ChatHeader = (props: ChatHeaderProps) => {
   const { className, ...rest } = props;
 
+  const chatContext = useChatContext();
+
   const currentChatState = useAtomValue(chatState);
-  const setCurrentSelectedChat = useSetAtom(selectedChat);
+  const [_currentSelectedChat, setCurrentSelectedChat] =
+    chatContext.selectedChatState;
 
   const onGoBack = () => {
-    setCurrentSelectedChat("");
+    setCurrentSelectedChat(undefined);
   };
 
   const getChatStatePlaceholder = (state: ChatStateProps) => {

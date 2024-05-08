@@ -5,15 +5,17 @@ import { cn, waitForTime } from "@/lib/utils";
 import { SendHorizonalIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Form, FormControl, FormField, FormItem } from "../../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ChatMessageProps, getReadingDelay, getTypingDelay } from "@/lib/chat";
-import { useAtom, useSetAtom } from "jotai";
-import { chatHistory, chatState, selectedChat } from "@/store/chat";
+import { getReadingDelay, getTypingDelay } from "@/lib/chat";
+import { useAtom } from "jotai";
+import { chatState } from "@/store/chat";
 import { askToAI } from "@/services/chat";
+import { useChatContext } from "@/contexts/chat";
+import { ChatMessageProps } from "@/services/edital-chat/interfaces";
 
 const formSchema = z.object({
   message: z.string().min(2),
@@ -25,16 +27,19 @@ const chatFooterVariants = cva(
 
 export interface ChatFootProps
   extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof chatFooterVariants> {
-  sessionId: string;
-}
+    VariantProps<typeof chatFooterVariants> {}
 
 const ChatFooter = (props: ChatFootProps) => {
-  const { sessionId, className, ...rest } = props;
+  const { className, ...rest } = props;
+
+  const chatContext = useChatContext();
 
   const [currentChatState, setCurrentChatState] = useAtom(chatState);
-  const setCurrentChatHistory = useSetAtom(chatHistory);
-  const [currentSelectedChat, setCurrentSelectedChat] = useAtom(selectedChat);
+
+  const [_currentChatHistory, setCurrentChatHistory] =
+    chatContext.chatHistoryState;
+  const [currentSelectedChat, _setCurrentSelectedChat] =
+    chatContext.selectedChatState;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,14 +49,14 @@ const ChatFooter = (props: ChatFootProps) => {
   });
 
   const response = async (question: string) => {
-    if (currentSelectedChat === "") return;
+    if (!currentSelectedChat) return;
 
     // Lendo
     setCurrentChatState("reading");
     const responseFromAPI: ChatMessageProps = await askToAI(
       question,
-      currentSelectedChat,
-      sessionId
+      currentSelectedChat.id,
+      chatContext.sessionId
     );
     const responseFromAPIList = [responseFromAPI];
     const readinTime = getReadingDelay(question);
@@ -64,7 +69,7 @@ const ChatFooter = (props: ChatFootProps) => {
       await waitForTime(typingTime);
       const responseMessage: ChatMessageProps = {
         content: q.content,
-        role: "assistent",
+        role: "ai",
       };
       setCurrentChatHistory((old) => [...old, responseMessage]);
 
@@ -81,15 +86,14 @@ const ChatFooter = (props: ChatFootProps) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const sentMessage: ChatMessageProps = {
       content: values.message,
-      role: "user",
+      role: "human",
     };
 
     setCurrentChatHistory((old) => [...old, sentMessage]);
     response(values.message);
   }
 
-  const formIsDisabled =
-    currentChatState !== "online" || currentSelectedChat === "";
+  const formIsDisabled = currentChatState !== "online" || !currentSelectedChat;
 
   return (
     <section className={cn(chatFooterVariants({ className }))} {...rest}>

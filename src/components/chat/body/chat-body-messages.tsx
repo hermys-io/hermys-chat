@@ -4,24 +4,25 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { ChatMessage } from "./chat-message";
-import { ScrollArea } from "../ui/scroll-area";
-import { useAtomValue } from "jotai";
-import { chatHistory } from "@/store/chat";
+import { ChatMessage } from "./chat-messages-item";
+import { ScrollArea } from "../../ui/scroll-area";
 import { useEffect } from "react";
+import { useChatContext } from "@/contexts/chat";
 
 const chatHeaderVariants = cva(
   "flex flex-col gap-7 flex-grow bg-background px-6 py-4"
 );
 
-export interface ChatBodyProps
+export interface ChatBodyMessagesProps
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof chatHeaderVariants> {}
 
-const ChatBody = (props: ChatBodyProps) => {
+const ChatBodyMessages = (props: ChatBodyMessagesProps) => {
   const { className, ...rest } = props;
 
-  const currentChatHistory = useAtomValue(chatHistory);
+  const chatContext = useChatContext();
+
+  const [currentChatHistory] = chatContext.chatHistoryState;
 
   const scrollToBottom = () => {
     const chatComponent = document.getElementById("chat-bottom");
@@ -41,7 +42,7 @@ const ChatBody = (props: ChatBodyProps) => {
         {currentChatHistory.map((message, index) => (
           <ChatMessage
             key={index}
-            variant={message.role === "assistent" ? "right" : "left"}
+            variant={message.role === "ai" ? "right" : "left"}
           >
             {message.content}
           </ChatMessage>
@@ -53,4 +54,4 @@ const ChatBody = (props: ChatBodyProps) => {
   );
 };
 
-export { ChatBody, chatHeaderVariants };
+export { ChatBodyMessages, chatHeaderVariants };

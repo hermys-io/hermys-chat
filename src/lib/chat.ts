@@ -1,11 +1,5 @@
 export type ChatStateProps = "online" | "reading" | "typing" | "breathe";
 
-export type ChatMessageProps = {
-  content: string;
-  wpm?: number;
-  role: "assistent" | "user";
-};
-
 export type Edital = {
   name: string;
   url: string;
