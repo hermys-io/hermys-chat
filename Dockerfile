@@ -6,6 +6,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 # Env variables
 ARG POSTHOG_KEY
 ARG POSTHOG_HOST
+ARG HERMYS_API_URL
 
 RUN corepack enable
 

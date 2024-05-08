@@ -74,19 +74,17 @@ export default function ChatSidebarCahts() {
       <div className="relative flex grow flex-col w-full">
         {shouldShowDataState ? (
           <>
-            {getFilteredData(chatContext.editaisQuery.data || []).map(
-              (edital) => (
-                <div
-                  key={edital.id}
-                  onClick={() => {
-                    setCurrentChatHistory([]);
-                    setCurrentSelectedChat(edital);
-                  }}
-                >
-                  <ChatItem data={edital} />
-                </div>
-              )
-            )}
+            {data.map((edital) => (
+              <div
+                key={edital.id}
+                onClick={() => {
+                  setCurrentChatHistory([]);
+                  setCurrentSelectedChat(edital);
+                }}
+              >
+                <ChatItem data={edital} />
+              </div>
+            ))}
           </>
         ) : null}
 
