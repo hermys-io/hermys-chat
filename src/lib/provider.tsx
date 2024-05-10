@@ -5,6 +5,7 @@ import { PostHogProvider } from "posthog-js/react";
 import { Provider as JotaiProvider, createStore } from "jotai";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.POSTHOG_KEY!, {
@@ -26,6 +27,7 @@ const Provider = (props: ProviderProps) => {
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
         <JotaiProvider store={store}>{children}</JotaiProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </PostHogProvider>
   );

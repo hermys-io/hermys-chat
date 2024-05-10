@@ -13,3 +13,8 @@ export type Edital = {
   updated_at: Date;
   id: string;
 };
+
+export type Session = {
+  id: string;
+  editais: string[];
+};

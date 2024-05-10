@@ -14,10 +14,10 @@ export default function Chat() {
   const [currentSelectedChat] = chatContext.selectedChatState;
 
   useEffect(() => {
-    if (chatContext.editaisQuery.error) notFound();
-  }, [chatContext.editaisQuery.error]);
+    if (chatContext.conversationQuery.error) notFound();
+  }, [chatContext.conversationQuery.error]);
 
-  if (chatContext.editaisQuery.isLoading) return <ChatSplashScreen />;
+  if (chatContext.sessionMutation.isPending) return <ChatSplashScreen />;
 
   return (
     <main className="w-full h-svh flex bg-background overflow-hidden">

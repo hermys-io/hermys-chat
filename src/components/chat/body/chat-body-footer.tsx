@@ -50,13 +50,14 @@ const ChatFooter = (props: ChatFootProps) => {
 
   const response = async (question: string) => {
     if (!currentSelectedChat) return;
+    if (!chatContext.session?.id) return;
 
     // Lendo
     setCurrentChatState("reading");
     const responseFromAPI: ChatMessageProps = await askToAI(
       question,
       currentSelectedChat.id,
-      chatContext.sessionId
+      chatContext.session.id
     );
     const responseFromAPIList = [responseFromAPI];
     const readinTime = getReadingDelay(question);

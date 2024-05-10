@@ -1,8 +1,19 @@
 "use client";
 
-import { ChatMessageProps, Edital } from "@/services/edital-chat/interfaces";
-import { useListEditais } from "@/services/edital-chat/queries";
-import { UseQueryResult } from "@tanstack/react-query";
+import {
+  ChatMessageProps,
+  Edital,
+  Session,
+} from "@/services/edital-chat/interfaces";
+import {
+  useAddEdital,
+  useCreateSession,
+} from "@/services/edital-chat/mutations";
+import {
+  useListAvaliables,
+  useListConversations,
+} from "@/services/edital-chat/queries";
+import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import {
   Dispatch,
   SetStateAction,
@@ -11,7 +22,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { v4 as uuid } from "uuid";
 
 interface ChatContextProviderProps {
   children?: React.ReactNode;
@@ -19,8 +29,19 @@ interface ChatContextProviderProps {
 }
 
 interface ChatContextValue {
-  editaisQuery: UseQueryResult<Edital[], Error>;
-  sessionId: string;
+  conversationQuery: UseQueryResult<Edital[], Error>;
+  avaliableQuery: UseQueryResult<Edital[], Error>;
+  session: Session | undefined;
+  sessionMutation: UseMutationResult<Session, Error, void, unknown>;
+  addEditalMutation: UseMutationResult<
+    Session,
+    Error,
+    {
+      sessionId: string;
+      editalId: string;
+    },
+    unknown
+  >;
   selectedChatState: [
     Edital | undefined,
     Dispatch<SetStateAction<Edital | undefined>>
@@ -29,6 +50,7 @@ interface ChatContextValue {
     ChatMessageProps[],
     Dispatch<SetStateAction<ChatMessageProps[]>>
   ];
+  newChatDrawerState: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
 const ChatContext = createContext({} as ChatContextValue);
@@ -36,31 +58,50 @@ const ChatContext = createContext({} as ChatContextValue);
 const ChatContextProvider = (props: ChatContextProviderProps) => {
   const { clerkId, children } = props;
 
-  const editaisQuery = useListEditais(clerkId);
-
+  const [session, setSession] = useState<Session | undefined>(undefined);
+  const newChatDrawerState = useState(false);
   const selectedChatState = useState<Edital | undefined>(undefined);
   const chatHistoryState = useState<ChatMessageProps[]>([]);
 
-  // Vai ser substituido pelo sessionid do banco de dados
-  const [sessionId, setSessionId] = useState("");
-  useEffect(() => {
-    const sessionIdKey = "sessionid";
-    const sessionIdValue = localStorage.getItem(sessionIdKey);
+  const conversationQuery = useListConversations(clerkId, session?.id);
+  const avaliableQuery = useListAvaliables(clerkId, session?.id);
 
-    if (sessionIdValue) {
-      setSessionId(sessionIdValue);
-    } else {
-      const newSessionIdValue = uuid();
-      localStorage.setItem(sessionIdKey, newSessionIdValue);
-      setSessionId(newSessionIdValue);
-    }
+  const sessionMutation = useCreateSession();
+  const addEditalMutation = useAddEdital(clerkId);
+
+  useEffect(() => {
+    const aaa = async () => {
+      const sessionIdKey = "session_id";
+      const sessionIdValue = localStorage.getItem(sessionIdKey);
+
+      if (sessionIdValue) {
+        setSession(JSON.parse(sessionIdValue) as Session);
+      } else {
+        await sessionMutation.mutateAsync();
+      }
+    };
+
+    aaa();
   }, []);
 
+  useEffect(() => {
+    if (sessionMutation.data === undefined) return;
+
+    const sessionIdKey = "session_id";
+
+    setSession(sessionMutation.data);
+    localStorage.setItem(sessionIdKey, JSON.stringify(sessionMutation.data));
+  }, [sessionMutation.data]);
+
   const providerValue: ChatContextValue = {
-    editaisQuery: editaisQuery,
-    sessionId: sessionId,
+    conversationQuery: conversationQuery,
+    avaliableQuery: avaliableQuery,
+    session: session,
+    sessionMutation: sessionMutation,
+    addEditalMutation: addEditalMutation,
     selectedChatState: selectedChatState,
     chatHistoryState: chatHistoryState,
+    newChatDrawerState: newChatDrawerState,
   };
 
   return (

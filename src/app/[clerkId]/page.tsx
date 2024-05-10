@@ -8,14 +8,6 @@ interface HomePageProps {
 export default function Home(props: HomePageProps) {
   const { params } = props;
 
-  // const editaisQuery = useListEditais(params.clerkId);
-
-  // useEffect(() => {
-  //   if (editaisQuery.error) notFound();
-  // }, [editaisQuery.error]);
-
-  // if (editaisQuery.isLoading) return <ChatSplashScreen />;
-
   return (
     <ChatContextProvider clerkId={params.clerkId}>
       <Chat />
