@@ -15,8 +15,7 @@ export default function ChatSidebarCreateChat() {
 
   const [_currentChatState, setCurrentSelectedChat] =
     chatContext.selectedChatState;
-  const [_currentChatChisotry, setCurrentChatHistory] =
-    chatContext.chatHistoryState;
+  const [_currentChatChisotry] = chatContext.chatHistoryState;
   const [newChatDrwaerOpen, setNewChatDrwaerOpen] =
     chatContext.newChatDrawerState;
 
@@ -28,7 +27,6 @@ export default function ChatSidebarCreateChat() {
     if (!chatContext.session?.id) return;
     if (!chatContext.addEditalMutation.isIdle) return;
 
-    setCurrentChatHistory([]);
     await chatContext.addEditalMutation.mutateAsync({
       sessionId: chatContext.session.id,
       editalId: edital.id,

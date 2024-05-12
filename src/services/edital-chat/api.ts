@@ -1,5 +1,5 @@
 import { api } from "../axios";
-import { Edital, Session } from "./interfaces";
+import { APIHistoryItem, Edital, Session } from "./interfaces";
 
 export const EDITAL_CHAT_QUERY_QUEY = "edital-chat";
 
@@ -40,6 +40,14 @@ export async function listConversation(clerkId: string, sessionId: string) {
 export async function listAvaliables(clerkId: string, sessionId: string) {
   const { data } = await api.get<Edital[]>(
     `/edital-chat/avaliables?clerk=${clerkId}&session_id=${sessionId}`
+  );
+
+  return data;
+}
+
+export async function getHistory(editalId: string, sessionId: string) {
+  const { data } = await api.get<APIHistoryItem[]>(
+    `/edital-chat/history?session_id=${sessionId}&edital_id=${editalId}`
   );
 
   return data;

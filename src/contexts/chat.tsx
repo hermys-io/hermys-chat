@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  ChatMessageProps,
+  ChatMessageItem,
   Edital,
   Session,
+  History,
 } from "@/services/edital-chat/interfaces";
 import {
   useAddEdital,
@@ -46,10 +47,7 @@ interface ChatContextValue {
     Edital | undefined,
     Dispatch<SetStateAction<Edital | undefined>>
   ];
-  chatHistoryState: [
-    ChatMessageProps[],
-    Dispatch<SetStateAction<ChatMessageProps[]>>
-  ];
+  chatHistoryState: [History, Dispatch<SetStateAction<History>>];
   newChatDrawerState: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
@@ -61,7 +59,7 @@ const ChatContextProvider = (props: ChatContextProviderProps) => {
   const [session, setSession] = useState<Session | undefined>(undefined);
   const newChatDrawerState = useState(false);
   const selectedChatState = useState<Edital | undefined>(undefined);
-  const chatHistoryState = useState<ChatMessageProps[]>([]);
+  const chatHistoryState = useState<History>({});
 
   const conversationQuery = useListConversations(clerkId, session?.id);
   const avaliableQuery = useListAvaliables(clerkId, session?.id);
@@ -69,6 +67,7 @@ const ChatContextProvider = (props: ChatContextProviderProps) => {
   const sessionMutation = useCreateSession();
   const addEditalMutation = useAddEdital(clerkId);
 
+  // Handle session ID
   useEffect(() => {
     const aaa = async () => {
       const sessionIdKey = "session_id";
@@ -84,7 +83,6 @@ const ChatContextProvider = (props: ChatContextProviderProps) => {
     aaa();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   useEffect(() => {
     if (sessionMutation.data === undefined) return;
 

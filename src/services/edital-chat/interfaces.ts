@@ -1,7 +1,17 @@
-export type ChatMessageProps = {
+export type ChatMessageItem = {
   content: string;
   role: "ai" | "human";
 };
+
+export type APIHistoryItem = {
+  type: "ai" | "human";
+  data: { content: string };
+};
+
+export type History = Record<
+  string,
+  { loaded: boolean; history: ChatMessageItem[] }
+>;
 
 export type Edital = {
   name: string;

@@ -8,9 +8,13 @@ import { MessageSquarePlusIcon, SearchIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import ChatItem from "./chat-sidebar-chat-item";
 import ChatSidebarChatsEmptyCTA from "./chat-sidebar-chats-empty-cta";
+import { useAtom } from "jotai";
+import { chatState } from "@/store/chat";
 
 export default function ChatSidebarCahts() {
   const chatContext = useChatContext();
+
+  const [currentChatState, setCurrentChatState] = useAtom(chatState);
 
   const [_currentChatState, setCurrentSelectedChat] =
     chatContext.selectedChatState;
@@ -21,7 +25,15 @@ export default function ChatSidebarCahts() {
 
   const [search, setSearch] = useState("");
 
+  const handleSelectChat = (edital: Edital) => {
+    if (disbled) return;
+
+    setCurrentSelectedChat(edital);
+  };
+
   const handleOpen = () => {
+    if (disbled) return;
+
     setNewChatDrwaerOpen(true);
     setTimeout(() => {
       setSearch("");
@@ -48,6 +60,8 @@ export default function ChatSidebarCahts() {
   const shouldShowDataState = data && data.length > 0;
   const shouldShowEmptyState = data && data.length === 0 && search === "";
   const shouldShowSearchEmptyState = data && data.length === 0 && search !== "";
+
+  const disbled = currentChatState !== "online";
 
   return (
     <div className="flex flex-col gap-6 w-[300px] h-full pt-4 bg-secondary border-r-2">
@@ -90,13 +104,7 @@ export default function ChatSidebarCahts() {
             {shouldShowDataState ? (
               <>
                 {data.map((edital) => (
-                  <div
-                    key={edital.id}
-                    onClick={() => {
-                      setCurrentChatHistory([]);
-                      setCurrentSelectedChat(edital);
-                    }}
-                  >
+                  <div key={edital.id} onClick={() => handleSelectChat(edital)}>
                     <ChatItem data={edital} />
                   </div>
                 ))}
