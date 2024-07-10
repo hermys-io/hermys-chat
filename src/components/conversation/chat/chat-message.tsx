@@ -21,11 +21,11 @@ export default function ChatMessage(props: ChatMessageProps) {
     },
   });
 
-  const messageBalloon = cva("rounded-lg px-4 py-3", {
+  const messageBalloon = cva("rounded-lg px-4 py-3 text-primary", {
     variants: {
       variant: {
-        assistent: "bg-secondary",
-        user: "bg-primary",
+        assistent: "bg-foreground text-primary dark:bg-border",
+        user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
       },
     },
     defaultVariants: {
@@ -42,7 +42,7 @@ export default function ChatMessage(props: ChatMessageProps) {
           da Prefeitura do Recife
         </div>
         {variant === "assistent" ? (
-          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1">
+          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1 text-background dark:text-primary">
             <Volume1Icon size={16} />
           </button>
         ) : (
@@ -56,7 +56,7 @@ export default function ChatMessage(props: ChatMessageProps) {
           abaixo?
         </div>
         {variant === "assistent" ? (
-          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1">
+          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1 text-background dark:text-primary">
             <Volume1Icon size={16} />
           </button>
         ) : (

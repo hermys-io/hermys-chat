@@ -10,7 +10,7 @@ export default function ConversationRoot() {
         <MenuHeader />
       </section>
 
-      <section className="flex flex-grow flex-col bg-primary-foreground">
+      <section className="flex flex-grow flex-col bg-card">
         <ChatHeader />
         <ChatMessages />
         <ChatWriteBar />
