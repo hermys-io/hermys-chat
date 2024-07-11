@@ -44,5 +44,11 @@ export const useTheme = () => {
     }
   };
 
-  return { getTheme, setTheme };
+  const toggleTheme = () => {
+    const currentTheme = getTheme();
+    if (currentTheme == "light") setTheme("dark");
+    else setTheme("light");
+  };
+
+  return { getTheme, setTheme, toggleTheme };
 };

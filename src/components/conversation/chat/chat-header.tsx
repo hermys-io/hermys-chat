@@ -1,10 +1,20 @@
+"use client";
 import { ArrowLeftIcon, MessageSquareWarningIcon } from "lucide-react";
 
-export default function ChatHeader() {
+interface ChatHeaderProps {
+  onClose: () => void;
+}
+
+export default function ChatHeader(props: ChatHeaderProps) {
+  const { onClose } = props;
+
   return (
     <header className="flex h-[72px] w-full items-center rounded-b-lg border-b-[1px] border-t-[1px] border-border bg-card px-4 lg:px-6">
       <div className="flex flex-grow items-center">
-        <button className="mr-2 flex h-8 w-8 items-center justify-center text-primary">
+        <button
+          onClick={onClose}
+          className="mr-2 flex h-8 w-8 items-center justify-center text-primary"
+        >
           <ArrowLeftIcon />
         </button>
 

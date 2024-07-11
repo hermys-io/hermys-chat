@@ -5,6 +5,14 @@ const nextConfig = {
     POSTHOG_HOST: process.env.POSTHOG_HOST,
     HERMYS_API_URL: process.env.HERMYS_API_URL,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
