@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { Volume1Icon } from "lucide-react";
+import { useSpeech } from "react-text-to-speech";
 
 interface ChatMessageProps {
   variant: "assistent" | "user";
@@ -21,7 +22,35 @@ export default function ChatMessage(props: ChatMessageProps) {
     },
   });
 
-  const messageBalloon = cva("rounded-lg px-4 py-3 text-primary", {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className={cn(messageBalloonWrapper({ variant }))}>
+        <MessageBalloon
+          text="Olá, sou o Hermys. Seu assistente de inteligência artificial pronto
+          para tirar todas as dúvidas relacionadas ao edital 064982.5684.2024.02
+          da Prefeitura do Recife"
+          variant={variant}
+        />
+      </div>
+
+      {variant === "assistent" ? (
+        <span className="h-6 w-6 rounded-full bg-red-500"></span>
+      ) : (
+        <span className="h-6 w-6 self-end rounded-full bg-red-500"></span>
+      )}
+    </div>
+  );
+}
+
+interface MessageBalloonProps {
+  text: string;
+  variant: "assistent" | "user";
+}
+
+const MessageBalloon = (props: MessageBalloonProps) => {
+  const { text, variant } = props;
+
+  const messageBalloon = cva("rounded-[8px] px-4 py-3 text-primary", {
     variants: {
       variant: {
         assistent: "bg-foreground text-primary dark:bg-border",
@@ -33,42 +62,39 @@ export default function ChatMessage(props: ChatMessageProps) {
     },
   });
 
+  const {
+    Text, // Component that returns the modified text property
+    speechStatus, // String that stores current speech status
+    isInQueue, // Boolean that stores whether a speech utterance is either being spoken or present in queue
+    start, // Function to start the speech or put it in queue
+    pause, // Function to pause the speech
+    stop, // Function to stop the speech or remove it from queue
+  } = useSpeech({ text: text });
+
+  const handleSpeech = () => {
+    switch (speechStatus) {
+      case "stopped":
+        start();
+      case "started":
+        stop();
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className={cn(messageBalloonWrapper({ variant }))}>
-        <div className={cn(messageBalloon({ variant }))}>
-          Olá, sou o Hermys. Seu assistente de inteligência artificial pronto
-          para tirar todas as dúvidas relacionadas ao edital 064982.5684.2024.02
-          da Prefeitura do Recife
-        </div>
-        {variant === "assistent" ? (
-          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1 text-background dark:text-primary">
-            <Volume1Icon size={16} />
-          </button>
-        ) : (
-          <div className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-transparent pl-1"></div>
-        )}
-      </div>
-
-      <div className={cn(messageBalloonWrapper({ variant }))}>
-        <div className={cn(messageBalloon({ variant }))}>
-          Se não souber por conde começar, que tal utilizar uma das perguntas
-          abaixo?
-        </div>
-        {variant === "assistent" ? (
-          <button className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1 text-background dark:text-primary">
-            <Volume1Icon size={16} />
-          </button>
-        ) : (
-          <div className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-transparent pl-1"></div>
-        )}
-      </div>
-
+    <>
+      <div className={cn(messageBalloon({ variant }))}>{text}</div>
       {variant === "assistent" ? (
-        <span className="h-6 w-6 rounded-full bg-red-500"></span>
+        <button
+          onClick={handleSpeech}
+          className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-[#131313] pl-1 text-background dark:text-primary"
+        >
+          <Volume1Icon size={16} />
+        </button>
       ) : (
-        <span className="h-6 w-6 self-end rounded-full bg-red-500"></span>
+        <div className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-transparent pl-1"></div>
       )}
-    </div>
+    </>
   );
-}
+};

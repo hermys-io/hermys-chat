@@ -68,6 +68,9 @@ importers:
       react-hook-form:
         specifier: ^7.51.3
         version: 7.51.3(react@18.3.1)
+      react-text-to-speech:
+        specifier: ^0.16.2
+        version: 0.16.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -1704,6 +1707,12 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  react-text-to-speech@0.16.2:
+    resolution: {integrity: sha512-Aof7nWJ7dlcJ0jT10ijprMLn0YsykB2gfU3p/bpqB1fnX3nJgnvRlG5LkPiz2ieG/fmamHUAAGUSXBAXIBaNwA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
 
   react@18.3.1:
     resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
@@ -3699,6 +3708,11 @@ snapshots:
       tslib: 2.6.2
     optionalDependencies:
       '@types/react': 18.3.1
+
+  react-text-to-speech@0.16.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react@18.3.1:
     dependencies:
