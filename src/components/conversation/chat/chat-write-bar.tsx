@@ -1,4 +1,3 @@
-import { useTheme } from "@/lib/theme-provider";
 import { SendHorizonalIcon } from "lucide-react";
 
 export default function ChatWriteBar() {
@@ -10,7 +9,7 @@ export default function ChatWriteBar() {
 
       <input className="mr-2 h-12 flex-grow rounded-[24px] bg-foreground px-6 text-primary dark:bg-input" />
 
-      <button className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-secondary dark:text-foreground">
+      <button className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-border dark:text-foreground">
         <SendHorizonalIcon size={18} />
       </button>
     </section>
