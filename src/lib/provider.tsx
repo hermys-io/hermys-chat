@@ -6,6 +6,7 @@ import { Provider as JotaiProvider, createStore } from "jotai";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import ThemeProvider from "./theme-provider";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.POSTHOG_KEY!, {
@@ -27,6 +28,7 @@ const Provider = (props: ProviderProps) => {
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
         <JotaiProvider store={store}>{children}</JotaiProvider>
+        <ThemeProvider />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </PostHogProvider>
