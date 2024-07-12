@@ -3,6 +3,7 @@ import Chat from "./chat/chat";
 import MenuHeader from "./menu/menu-header";
 import MenuChats from "./menu/menu-chats";
 import { useState } from "react";
+import Menu from "./menu/menu";
 
 export default function ConversationRoot() {
   const [currentConversation, setCurrentConversation] = useState<string>();
@@ -16,11 +17,8 @@ export default function ConversationRoot() {
   };
 
   return (
-    <main className="relative flex min-h-svh w-full flex-col overflow-hidden">
-      <section className="z-10 flex flex-grow flex-col">
-        <MenuHeader />
-        <MenuChats onSelect={onSelectConversation} />
-      </section>
+    <main className="relative flex max-h-svh min-h-svh w-full flex-col overflow-hidden lg:flex-row">
+      <Menu onSelect={onSelectConversation} />
 
       <Chat
         onClose={onCloseConveration}

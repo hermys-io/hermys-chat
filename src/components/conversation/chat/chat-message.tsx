@@ -10,20 +10,23 @@ interface ChatMessageProps {
 export default function ChatMessage(props: ChatMessageProps) {
   const { variant } = props;
 
-  const messageBalloonWrapper = cva("flex w-full items-center gap-2", {
-    variants: {
-      variant: {
-        assistent: "flex-row",
-        user: "flex-row-reverse ",
+  const messageBalloonWrapper = cva(
+    "flex w-full items-center gap-2 lg:max-w-[400px]",
+    {
+      variants: {
+        variant: {
+          assistent: "flex-row",
+          user: "flex-row-reverse ml-auto",
+        },
+      },
+      defaultVariants: {
+        variant: "assistent",
       },
     },
-    defaultVariants: {
-      variant: "assistent",
-    },
-  });
+  );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col justify-start gap-2">
       <div className={cn(messageBalloonWrapper({ variant }))}>
         <MessageBalloon
           text="Olá, sou o Hermys. Seu assistente de inteligência artificial pronto
