@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/lib/theme-provider";
+import { Knowledge } from "@/services/knowledge/interfaces";
 import {
   ArrowLeftIcon,
   MessageSquareWarningIcon,
@@ -8,30 +9,39 @@ import {
 } from "lucide-react";
 
 interface ChatHeaderProps {
+  data?: Knowledge;
   onClose: () => void;
 }
 
 export default function ChatHeader(props: ChatHeaderProps) {
-  const { onClose } = props;
+  const { data, onClose } = props;
 
   const { toggleTheme } = useTheme();
 
   return (
     <header className="flex min-h-[72px] w-full items-center rounded-b-lg border-b-[1px] border-t-[1px] border-border bg-background px-4 lg:px-6">
-      <div className="flex flex-grow items-center">
+      <div className="flex items-center flex-grow">
         <button
           onClick={onClose}
-          className="mr-2 flex h-8 w-8 items-center justify-center text-primary lg:hidden"
+          className="flex items-center justify-center w-8 h-8 mr-2 text-primary lg:hidden"
         >
           <ArrowLeftIcon />
         </button>
 
-        <div className="mr-4 h-10 w-10 rounded-full bg-slate-600"></div>
+        <div
+          style={{
+            backgroundImage: `url('${data?.photo}')`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+            backgroundPosition: "center",
+          }}
+          className="w-10 h-10 mr-4 rounded-full bg-slate-600"
+        />
 
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-bold text-primary">Prefeitura do Recife</p>
+          <p className="text-sm font-bold text-primary">{data?.name}</p>
           <p className="text-xs italic text-muted-foreground">
-            Prova: 00/00/0000
+            {data?.alt_text}
           </p>
         </div>
       </div>
@@ -42,7 +52,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
         </button>
         <button
           onClick={toggleTheme}
-          className="hidden items-center justify-center text-primary lg:flex"
+          className="items-center justify-center hidden text-primary lg:flex"
         >
           <SunMoonIcon />
         </button>

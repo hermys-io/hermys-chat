@@ -4,11 +4,12 @@ import { Volume1Icon } from "lucide-react";
 import { useSpeech } from "react-text-to-speech";
 
 interface ChatMessageProps {
+  content: string;
   variant: "assistent" | "user";
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
-  const { variant } = props;
+  const { content, variant } = props;
 
   const messageBalloonWrapper = cva(
     "flex w-full items-center gap-2 lg:max-w-[400px]",
@@ -28,18 +29,13 @@ export default function ChatMessage(props: ChatMessageProps) {
   return (
     <div className="flex flex-col justify-start gap-2">
       <div className={cn(messageBalloonWrapper({ variant }))}>
-        <MessageBalloon
-          text="Olá, sou o Hermys. Seu assistente de inteligência artificial pronto
-          para tirar todas as dúvidas relacionadas ao edital 064982.5684.2024.02
-          da Prefeitura do Recife"
-          variant={variant}
-        />
+        <MessageBalloon text={content} variant={variant} />
       </div>
 
       {variant === "assistent" ? (
-        <span className="h-6 w-6 rounded-full bg-red-500"></span>
+        <span className="w-6 h-6 bg-red-500 rounded-full"></span>
       ) : (
-        <span className="h-6 w-6 self-end rounded-full bg-red-500"></span>
+        <span className="self-end w-6 h-6 bg-red-500 rounded-full"></span>
       )}
     </div>
   );
@@ -96,7 +92,7 @@ const MessageBalloon = (props: MessageBalloonProps) => {
           <Volume1Icon size={16} />
         </button>
       ) : (
-        <div className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-transparent pl-1"></div>
+        <div className="flex items-center justify-center pl-1 bg-transparent rounded-full min-h-6 min-w-6"></div>
       )}
     </>
   );

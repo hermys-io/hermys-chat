@@ -1,15 +1,57 @@
-import { SendHorizonalIcon } from "lucide-react";
+"use client";
 
-export default function ChatWriteBar() {
+import { useAskAI } from "@/services/knowledge/mutations";
+import { SendHorizonalIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+
+interface ChatWriteBarProps {
+  sessionId: string;
+  knowledgeId: string;
+}
+
+export default function ChatWriteBar(props: ChatWriteBarProps) {
+  const { sessionId, knowledgeId } = props;
+
+  const [question, setQuestion] = useState("");
+
+  const askAIMutation = useAskAI();
+
+  const handleSubmit = async () => {
+    if (askAIMutation.isPending) return;
+
+    setQuestion("");
+    const response = await askAIMutation.mutateAsync({
+      knowledgeId: knowledgeId,
+      sessionId: sessionId,
+      question: question,
+    });
+  };
+
+  useEffect(() => {
+    setQuestion("");
+  }, []);
+
   return (
     <section className="flex min-h-24 items-center border-t-[1px] border-border px-4">
       {/* <button className="mr-4 flex h-12 w-12 items-center justify-center rounded-full border-[1px]">
         <MessageSquarePlusIcon className="text-primary" />
       </button> */}
 
-      <input className="mr-2 h-12 flex-grow rounded-[24px] bg-foreground px-6 text-primary dark:bg-input" />
+      <input
+        onChange={(e) => setQuestion(e.target.value)}
+        onKeyDown={(e) => {
+          console.log(typeof e.key)
+          if (e.key == "Enter") handleSubmit();
+        }}
+        value={question}
+        className="mr-2 h-12 flex-grow rounded-[24px] bg-foreground px-6 text-primary dark:bg-input"
+      />
 
-      <button className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-border dark:text-foreground">
+      <button
+        disabled={askAIMutation.isPending}
+        onClick={handleSubmit}
+        className="flex items-center justify-center w-12 h-12 text-sm rounded-full bg-primary text-border dark:bg-border dark:text-foreground"
+      >
         <SendHorizonalIcon size={18} />
       </button>
     </section>

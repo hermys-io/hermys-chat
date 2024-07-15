@@ -1,28 +1,62 @@
 "use client";
+import { useEffect, useState } from "react";
 import Chat from "./chat/chat";
-import MenuHeader from "./menu/menu-header";
-import MenuChats from "./menu/menu-chats";
-import { useState } from "react";
 import Menu from "./menu/menu";
+import { useQueryState } from "nuqs";
+import { v4 as uuidv4 } from 'uuid';
 
-export default function ConversationRoot() {
-  const [currentConversation, setCurrentConversation] = useState<string>();
+
+interface ConversationRootProps {
+  clerkSlug: string;
+}
+
+export default function ConversationRoot(props: ConversationRootProps) {
+  const { clerkSlug } = props;
+
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+
+  const [currentConversation, setCurrentConversation] =
+    useQueryState("conversation");
 
   const onSelectConversation = (conversationID: string) => {
     setCurrentConversation(conversationID);
   };
 
   const onCloseConveration = () => {
-    setCurrentConversation(undefined);
+    setCurrentConversation(null);
   };
+  
+  useEffect(() => {
+    const sessionIdKey = "session_id";
+
+    const getSessionId = async () => {
+      const sessionIdValue = localStorage.getItem(sessionIdKey);
+
+      if (sessionIdValue) {
+        setSessionId(sessionIdValue);
+      } else {
+        const newSessionId = uuidv4();
+        setSessionId(newSessionId);
+        localStorage.setItem(sessionIdKey, newSessionId);
+      }
+    };
+    getSessionId();
+  }, []);
+
+  if (!sessionId) return;
 
   return (
-    <main className="relative flex max-h-svh min-h-svh w-full flex-col overflow-hidden lg:flex-row">
-      <Menu onSelect={onSelectConversation} />
-
+    <main className="relative flex flex-col w-full overflow-hidden max-h-svh min-h-svh lg:flex-row">
+      <Menu
+        onSelect={onSelectConversation}
+        current={currentConversation}
+        clerkSlug={clerkSlug}
+      />
       <Chat
         onClose={onCloseConveration}
         variant={currentConversation ? "normal" : "hidden"}
+        currentConversation={currentConversation ? currentConversation : ""}
+        sessionId={sessionId}
       />
     </main>
   );
