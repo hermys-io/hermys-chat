@@ -55,7 +55,7 @@ export default function ConversationRoot(props: ConversationRootProps) {
       <Chat
         onClose={onCloseConveration}
         variant={currentConversation ? "normal" : "hidden"}
-        currentConversation={currentConversation ? currentConversation : ""}
+        currentConversation={currentConversation}
         sessionId={sessionId}
       />
     </main>

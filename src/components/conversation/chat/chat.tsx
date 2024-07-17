@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useGetChatHitory } from "@/services/knowledge/query";
 
 interface ChatProps {
-  currentConversation: string;
+  currentConversation: string | null;
   sessionId: string;
   onClose: () => void;
   variant: "normal" | "hidden";

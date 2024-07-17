@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 interface ChatWriteBarProps {
   sessionId: string;
-  knowledgeId: string;
+  knowledgeId: string | null;
 }
 
 export default function ChatWriteBar(props: ChatWriteBarProps) {
@@ -18,13 +18,14 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
 
   const handleSubmit = async () => {
     if (askAIMutation.isPending) return;
-
-    setQuestion("");
-    const response = await askAIMutation.mutateAsync({
-      knowledgeId: knowledgeId,
-      sessionId: sessionId,
-      question: question,
-    });
+    if (knowledgeId) {
+      setQuestion("");
+      const response = await askAIMutation.mutateAsync({
+        knowledgeId: knowledgeId,
+        sessionId: sessionId,
+        question: question,
+      });
+    }
   };
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
       <input
         onChange={(e) => setQuestion(e.target.value)}
         onKeyDown={(e) => {
-          console.log(typeof e.key)
+          console.log(typeof e.key);
           if (e.key == "Enter") handleSubmit();
         }}
         value={question}
@@ -50,7 +51,7 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
       <button
         disabled={askAIMutation.isPending}
         onClick={handleSubmit}
-        className="flex items-center justify-center w-12 h-12 text-sm rounded-full bg-primary text-border dark:bg-border dark:text-foreground"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-border dark:text-foreground"
       >
         <SendHorizonalIcon size={18} />
       </button>
