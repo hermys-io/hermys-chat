@@ -16,7 +16,7 @@ export default function Chat(props: ChatProps) {
   const { currentConversation, sessionId, onClose, variant } = props;
 
   const chatWrapper = cva(
-    "absolute h-svh w-full z-30 flex flex-grow flex-col bg-card transition-[left] ease-in-out duration-500 lg:relative lg:left-0 lg:transition-none",
+    "fixed h-svh w-full z-30 flex flex-grow flex-col bg-card transition-[left] ease-in-out duration-500 lg:relative lg:left-0 lg:transition-none",
     {
       variants: {
         variant: {
