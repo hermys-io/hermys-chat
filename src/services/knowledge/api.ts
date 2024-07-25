@@ -1,5 +1,10 @@
 import { api } from "../axios";
-import { ChatHistory, Knowledge, KnowledgeFilterPayload } from "./interfaces";
+import {
+  ChatHistory,
+  Clerk,
+  Knowledge,
+  KnowledgeFilterPayload,
+} from "./interfaces";
 
 export const EDITAL_CHAT_QUERY_QUEY = "edital-chat";
 
@@ -30,5 +35,13 @@ export async function askAI(
     `/host-knowledge/ask?knowledge_id=${knowledgeId}&session_id=${sessionId}&question=${question}`,
   );
 
+  return data;
+}
+
+export async function getClerk(clerkSlug: string) {
+  const { data } = await api.get<Clerk>(
+    `/host-knowledge/clerk?clerk_slug=${clerkSlug}`,
+  );
+  console.log(data);
   return data;
 }

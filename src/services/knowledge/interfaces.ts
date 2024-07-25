@@ -25,3 +25,14 @@ export interface History {
   type: "human" | "ai";
   content: string;
 }
+
+export interface Clerk {
+  active: boolean;
+  description: string;
+  gpt_model: string;
+  id: string;
+  name: string;
+  photo: string | null;
+  prompt: string;
+  slug: string;
+}

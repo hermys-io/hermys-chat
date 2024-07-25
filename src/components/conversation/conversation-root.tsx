@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Chat from "./chat/chat";
 import Menu from "./menu/menu";
 import { useQueryState } from "nuqs";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
+import { useGetClerk } from "@/services/knowledge/query";
 
 interface ConversationRootProps {
   clerkSlug: string;
@@ -18,6 +18,8 @@ export default function ConversationRoot(props: ConversationRootProps) {
   const [currentConversation, setCurrentConversation] =
     useQueryState("conversation");
 
+  const clerkQuery = useGetClerk({ clerkID: clerkSlug });
+
   const onSelectConversation = (conversationID: string) => {
     setCurrentConversation(conversationID);
   };
@@ -25,7 +27,7 @@ export default function ConversationRoot(props: ConversationRootProps) {
   const onCloseConveration = () => {
     setCurrentConversation(null);
   };
-  
+
   useEffect(() => {
     const sessionIdKey = "session_id";
 
@@ -46,11 +48,12 @@ export default function ConversationRoot(props: ConversationRootProps) {
   if (!sessionId) return;
 
   return (
-    <main className="relative flex flex-col w-full overflow-hidden max-h-svh min-h-svh lg:flex-row">
+    <main className="relative flex max-h-svh min-h-svh w-full flex-col overflow-hidden lg:flex-row">
       <Menu
         onSelect={onSelectConversation}
         current={currentConversation}
         clerkSlug={clerkSlug}
+        clerkPhoto={clerkQuery.data?.photo}
       />
       <Chat
         onClose={onCloseConveration}

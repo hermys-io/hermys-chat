@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getChatHistory, listKnowledges } from "./api";
+import { getChatHistory, listKnowledges, getClerk } from "./api";
 import { KnowledgeFilterPayload } from "./interfaces";
 
 const knowledgeKeys = {
@@ -32,3 +32,11 @@ export const useGetChatHitory = ({
     enabled: !!knowledgeId,
   });
 };
+
+export const useGetClerk = ({clerkID}: {clerkID: string}) => {
+  return useQuery({
+    queryKey: ["clerk", clerkID],
+    queryFn: () => getClerk(clerkID),
+    enabled: !!clerkID,
+  });
+}
