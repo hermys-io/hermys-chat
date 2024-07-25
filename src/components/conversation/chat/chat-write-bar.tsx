@@ -2,15 +2,16 @@
 
 import { useAskAI } from "@/services/knowledge/mutations";
 import { SendHorizonalIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface ChatWriteBarProps {
   sessionId: string;
   knowledgeId: string | null;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ChatWriteBar(props: ChatWriteBarProps) {
-  const { sessionId, knowledgeId } = props;
+  const { sessionId, knowledgeId, setIsLoading } = props;
 
   const [question, setQuestion] = useState("");
 
@@ -20,11 +21,13 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
     if (askAIMutation.isPending) return;
     if (knowledgeId) {
       setQuestion("");
+      setIsLoading(true);
       const response = await askAIMutation.mutateAsync({
         knowledgeId: knowledgeId,
         sessionId: sessionId,
         question: question,
       });
+      setIsLoading(false);
     }
   };
 

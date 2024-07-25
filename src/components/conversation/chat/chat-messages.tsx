@@ -5,10 +5,11 @@ import { useEffect } from "react";
 
 interface CharMessagesProps {
   data?: History[];
+  isLoading: boolean;
 }
 
 export default function ChatMessages(props: CharMessagesProps) {
-  const { data } = props;
+  const { data, isLoading } = props;
 
   const scrollToBottom = () => {
     const chatComponent = document.getElementById("chat-bottom");
@@ -24,7 +25,7 @@ export default function ChatMessages(props: CharMessagesProps) {
 
   return (
     <ScrollArea className="h-full">
-      <section className="flex flex-col flex-grow h-full gap-6 px-4 py-8 overflow-hidden w-ful bg-card">
+      <section className="w-ful flex h-full flex-grow flex-col gap-6 overflow-hidden bg-card px-4 py-8">
         {data
           ? data.map((item) => (
               <ChatMessage
@@ -34,6 +35,13 @@ export default function ChatMessages(props: CharMessagesProps) {
               />
             ))
           : null}
+
+        {isLoading ? (
+          <div className="w-max rounded-[8px] bg-foreground p-4 px-4 py-3 text-primary dark:bg-border">
+            <div className="loader"></div>
+          </div>
+        ) : null}
+
         <div id="chat-bottom" style={{ overflowAnchor: "auto", height: 1 }} />
       </section>
     </ScrollArea>
