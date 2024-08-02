@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { Volume1Icon } from "lucide-react";
 import { useSpeech } from "react-text-to-speech";
+import Markdown from "react-markdown";
 
 interface ChatMessageProps {
   content: string;
@@ -12,7 +13,7 @@ export default function ChatMessage(props: ChatMessageProps) {
   const { content, variant } = props;
 
   const messageBalloonWrapper = cva(
-    "flex w-full items-center gap-2 lg:max-w-[400px]",
+    "flex w-full items-center gap-2 lg: lg:w-max lg:max-w-[70%]",
     {
       variants: {
         variant: {
@@ -33,9 +34,9 @@ export default function ChatMessage(props: ChatMessageProps) {
       </div>
 
       {variant === "assistent" ? (
-        <span className="w-6 h-6 bg-red-500 rounded-full"></span>
+        <span className="h-6 w-6 rounded-full bg-red-500"></span>
       ) : (
-        <span className="self-end w-6 h-6 bg-red-500 rounded-full"></span>
+        <span className="h-6 w-6 self-end rounded-full bg-red-500"></span>
       )}
     </div>
   );
@@ -49,17 +50,20 @@ interface MessageBalloonProps {
 const MessageBalloon = (props: MessageBalloonProps) => {
   const { text, variant } = props;
 
-  const messageBalloon = cva("rounded-[8px] px-4 py-3 text-primary", {
-    variants: {
-      variant: {
-        assistent: "bg-foreground text-primary dark:bg-border",
-        user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
+  const messageBalloon = cva(
+    "rounded-[8px] px-4 py-3 w-full text-primary lg:max-w-[500px]",
+    {
+      variants: {
+        variant: {
+          assistent: "bg-foreground text-primary dark:bg-border",
+          user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
+        },
+      },
+      defaultVariants: {
+        variant: "assistent",
       },
     },
-    defaultVariants: {
-      variant: "assistent",
-    },
-  });
+  );
 
   const {
     Text, // Component that returns the modified text property
@@ -83,7 +87,22 @@ const MessageBalloon = (props: MessageBalloonProps) => {
 
   return (
     <>
-      <div className={cn(messageBalloon({ variant }))}>{text}</div>
+      <div className={cn(messageBalloon({ variant }))}>
+        <Markdown
+          components={{
+            a: (props) => (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-500 underline"
+                {...props}
+              />
+            ),
+          }}
+        >
+          {text}
+        </Markdown>
+      </div>
       {variant === "assistent" ? (
         <button
           onClick={handleSpeech}
@@ -92,7 +111,7 @@ const MessageBalloon = (props: MessageBalloonProps) => {
           <Volume1Icon size={16} />
         </button>
       ) : (
-        <div className="flex items-center justify-center pl-1 bg-transparent rounded-full min-h-6 min-w-6"></div>
+        <div className="flex min-h-6 min-w-6 items-center justify-center rounded-full bg-transparent pl-1"></div>
       )}
     </>
   );

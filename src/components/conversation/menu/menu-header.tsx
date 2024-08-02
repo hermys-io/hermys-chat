@@ -13,11 +13,9 @@ export default function MenuHeader(props: MenuHeaderProps) {
   const { toggleTheme } = useTheme();
 
   return (
-    <div className="flex min-h-16 items-center justify-between border-t-[1px] border-border bg-background px-6">
+    <div className="flex min-h-[72px] items-center justify-between border-t-[1px] border-border bg-background px-6">
       <Link href="/">
-        {clerkPhoto ? (
-          <img src="https://i.imgur.com/mKylnEf.png" alt="a" />
-        ) : null}
+        {clerkPhoto ? <img src={clerkPhoto} alt="clerk image" /> : null}
       </Link>
 
       <button onClick={toggleTheme} className="text-primary lg:hidden">

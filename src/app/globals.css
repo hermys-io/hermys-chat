@@ -90,6 +90,22 @@
   }
 }
 
+ol,
+ul {
+  padding-inline-start: 40px;
+}
+
+ol {
+  list-style: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
+ul {
+  list-style: disc;
+  margin-bottom: 12px;
+}
+
 @keyframes l3 {
   20% {
     background-position:
