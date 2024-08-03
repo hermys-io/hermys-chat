@@ -13,7 +13,7 @@ export default function ChatMessage(props: ChatMessageProps) {
   const { content, variant } = props;
 
   const messageBalloonWrapper = cva(
-    "flex w-full items-center gap-2 lg: lg:w-max lg:max-w-[70%]",
+    "flex w-full items-center gap-2 lg: lg:max-w-[70%]",
     {
       variants: {
         variant: {
@@ -50,20 +50,17 @@ interface MessageBalloonProps {
 const MessageBalloon = (props: MessageBalloonProps) => {
   const { text, variant } = props;
 
-  const messageBalloon = cva(
-    "rounded-[8px] px-4 py-3 w-full text-primary lg:max-w-[500px]",
-    {
-      variants: {
-        variant: {
-          assistent: "bg-foreground text-primary dark:bg-border",
-          user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
-        },
-      },
-      defaultVariants: {
-        variant: "assistent",
+  const messageBalloon = cva("rounded-[8px] px-4 py-3 text-primary", {
+    variants: {
+      variant: {
+        assistent: "bg-foreground text-primary dark:bg-border",
+        user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
       },
     },
-  );
+    defaultVariants: {
+      variant: "assistent",
+    },
+  });
 
   const {
     Text, // Component that returns the modified text property
