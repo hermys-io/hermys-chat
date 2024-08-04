@@ -1,6 +1,9 @@
+"use client";
 import { cn } from "@/lib/utils";
+import { useGetSignedFile } from "@/services/helpers/query";
 import { Knowledge } from "@/services/knowledge/interfaces";
 import { cva } from "class-variance-authority";
+import { useEffect, useState } from "react";
 
 interface MenuChatProps {
   data: Knowledge;
@@ -10,6 +13,8 @@ interface MenuChatProps {
 
 export default function MenuChat(props: MenuChatProps) {
   const { data, variant, onSelect } = props;
+
+  const imageFileQuery = useGetSignedFile({ filename: data.photo });
 
   const handleSelect = () => {
     onSelect(data.id);
@@ -35,7 +40,7 @@ export default function MenuChat(props: MenuChatProps) {
       <div className="flex justify-between">
         <div
           style={{
-            backgroundImage: `url('${data.photo}')`,
+            backgroundImage: `url('${imageFileQuery.data}')`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
             backgroundPosition: "center",
@@ -50,9 +55,6 @@ export default function MenuChat(props: MenuChatProps) {
       <div className="flex flex-col gap-1">
         <p className="font-bold text-primary">{data.name}</p>
         <p className="text-sm italic text-muted-foreground">{data.alt_text}</p>
-        {/* <p className="text-sm italic text-muted-foreground lg:hidden">
-          Data prevista prova Qui, 01/08/2024
-        </p> */}
       </div>
 
       <div className="flex h-full pt-4">

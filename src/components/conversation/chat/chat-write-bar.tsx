@@ -44,7 +44,6 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
       <input
         onChange={(e) => setQuestion(e.target.value)}
         onKeyDown={(e) => {
-          console.log(typeof e.key);
           if (e.key == "Enter") handleSubmit();
         }}
         value={question}

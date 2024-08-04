@@ -42,6 +42,5 @@ export async function getClerk(clerkSlug: string) {
   const { data } = await api.get<Clerk>(
     `/host-knowledge/clerk?clerk_slug=${clerkSlug}`,
   );
-  console.log(data);
   return data;
 }

@@ -32,7 +32,8 @@ export interface Clerk {
   gpt_model: string;
   id: string;
   name: string;
-  photo: string | null;
+  photo_light: string | null;
+  photo_dark: string | null;
   prompt: string;
   slug: string;
 }
