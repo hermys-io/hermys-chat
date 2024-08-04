@@ -22,11 +22,6 @@ export default function MenuHeader(props: MenuHeaderProps) {
     filename: clerkPhotoDark ? clerkPhotoDark : undefined,
   });
 
-  const currentImage =
-    currentTheme == "light"
-      ? imageFileLightQuery.data
-      : imageFileDarkQuery.data;
-
   return (
     <div className="flex min-h-[72px] items-center justify-between border-t-[1px] border-border bg-background px-6">
       <Link href="/">

@@ -36,4 +36,5 @@ export interface Clerk {
   photo_dark: string | null;
   prompt: string;
   slug: string;
+  chat_title: string;
 }

@@ -55,6 +55,7 @@ export default function ConversationRoot(props: ConversationRootProps) {
         clerkSlug={clerkSlug}
         clerkPhotoLight={clerkQuery.data?.photo_light}
         clerkPhotoDark={clerkQuery.data?.photo_dark}
+        clerkTitle={clerkQuery.data?.chat_title}
       />
       <Chat
         onClose={onCloseConveration}
