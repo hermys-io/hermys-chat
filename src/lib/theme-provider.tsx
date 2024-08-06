@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { atom, useAtom } from "jotai";
 
 interface ThemeProviderProps {
   children?: React.ReactNode;
@@ -12,8 +13,10 @@ export default function ThemeProvider(props: ThemeProviderProps) {
   return children;
 }
 
+export const themeState = atom<ThemeFlavours>("light");
+
 export const useTheme = () => {
-  const [currentTheme, setCurrentTheme] = useState<ThemeFlavours>();
+  const [currentTheme, setCurrentTheme] = useAtom(themeState);
 
   const getTheme = () => {
     const currentTheme = localStorage.getItem("theme");
@@ -23,7 +26,6 @@ export const useTheme = () => {
 
   const setTheme = (theme: ThemeFlavours) => {
     localStorage.setItem("theme", theme);
-    setCurrentTheme(theme);
 
     if (theme == "light") {
       document.body.classList.remove("dark");
@@ -36,8 +38,13 @@ export const useTheme = () => {
 
   const toggleTheme = () => {
     const currentTheme = getTheme();
-    if (currentTheme == "light") setTheme("dark");
-    else setTheme("light");
+    if (currentTheme == "light") {
+      setTheme("dark");
+      setCurrentTheme("dark");
+    } else {
+      setTheme("light");
+      setCurrentTheme("light");
+    }
   };
 
   useEffect(() => {

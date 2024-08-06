@@ -26,16 +26,21 @@ export default function MenuHeader(props: MenuHeaderProps) {
     <div className="flex min-h-[72px] items-center justify-between border-t-[1px] border-border bg-background px-6">
       <Link href="/">
         <div className="relative max-h-[40px] min-h-[40px] min-w-[275px] max-w-[275px]">
-          {imageFileLightQuery.data || imageFileDarkQuery.data ? (
+          {currentTheme == "light" && imageFileLightQuery.data ? (
             <Image
               className="!important h-[40px] w-auto"
               layout="fill"
               objectFit=""
-              src={
-                currentTheme == "light"
-                  ? (imageFileLightQuery.data as string)
-                  : (imageFileDarkQuery.data as string)
-              }
+              src={imageFileLightQuery.data}
+              alt="clerk image"
+            />
+          ) : null}
+          {currentTheme == "dark" && imageFileDarkQuery.data ? (
+            <Image
+              className="!important h-[40px] w-auto"
+              layout="fill"
+              objectFit=""
+              src={imageFileDarkQuery.data}
               alt="clerk image"
             />
           ) : null}
