@@ -62,7 +62,7 @@ export const useTheme = () => {
       document.body.classList.remove("dark");
       document.body.classList.add("light");
     }
-  }, []);
+  }, [setCurrentTheme]);
 
   return { getTheme, setTheme, toggleTheme, currentTheme };
 };
