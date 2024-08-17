@@ -54,7 +54,7 @@ const MessageBalloon = (props: MessageBalloonProps) => {
     variants: {
       variant: {
         assistent: "bg-foreground text-primary dark:bg-border",
-        user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-secondary",
+        user: "bg-background text-primary border-hermys-acccent border-[1px] dark:bg-foreground dark:text-border",
       },
     },
     defaultVariants: {

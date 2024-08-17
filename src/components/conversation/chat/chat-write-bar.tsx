@@ -58,7 +58,7 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
         <SendHorizonalIcon size={18} />
       </button>
 
-      <div className="absolute top-[-57px] flex max-h-14 min-h-14 max-w-full items-center justify-center bg-card px-4 lg:px-16">
+      <div className="absolute left-0 top-[-57px] flex max-h-14 min-h-14 min-w-full items-center justify-center bg-card px-4 lg:px-16">
         <p className="text-center text-[10px] text-secondary">
           Algumas informações citadas podem ser desatualizadas pois tem como
           recurso um documento externo. Considere verificar as informações e
