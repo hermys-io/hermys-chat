@@ -51,6 +51,7 @@ export default function Chat(props: ChatProps) {
         knowledgeId={currentConversation}
         sessionId={sessionId}
         setIsLoading={setIsLoading}
+        suggestions={chatHistoryQuery.data?.suggestions}
       />
     </section>
   );

@@ -18,6 +18,7 @@ export const useAskAI = () => {
         (oldData: ChatHistory) => {
           const newChatHistory: ChatHistory = {
             knowledge: oldData.knowledge,
+            suggestions: oldData.suggestions,
             history: [
               ...oldData.history,
               {
@@ -39,6 +40,7 @@ export const useAskAI = () => {
         (oldData: ChatHistory) => {
           const newChatHistory: ChatHistory = {
             knowledge: oldData.knowledge,
+            suggestions: oldData.suggestions,
             history: [
               ...oldData.history,
               {

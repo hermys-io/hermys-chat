@@ -1,19 +1,23 @@
 "use client";
 
+import { Suggestion } from "@/services/knowledge/interfaces";
 import { useAskAI } from "@/services/knowledge/mutations";
-import { SendHorizonalIcon } from "lucide-react";
+import { MessageSquarePlusIcon, SendHorizonalIcon } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 
 interface ChatWriteBarProps {
   sessionId: string;
   knowledgeId: string | null;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  suggestions?: Suggestion[];
 }
 
 export default function ChatWriteBar(props: ChatWriteBarProps) {
-  const { sessionId, knowledgeId, setIsLoading } = props;
+  const { sessionId, knowledgeId, suggestions, setIsLoading } = props;
 
   const [question, setQuestion] = useState("");
+  const [suggestionsVisible, setSuggestionsVisible] = useState(false);
 
   const askAIMutation = useAskAI();
 
@@ -31,15 +35,37 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
     }
   };
 
+  const onAskSuggestion = async (text: string) => {
+    if (askAIMutation.isPending) return;
+    if (knowledgeId) {
+      setSuggestionsVisible(false);
+      setIsLoading(true);
+      const response = await askAIMutation.mutateAsync({
+        knowledgeId: knowledgeId,
+        sessionId: sessionId,
+        question: text,
+      });
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     setQuestion("");
   }, []);
 
   return (
     <section className="relative flex min-h-24 items-center border-t-[1px] border-border px-4">
-      {/* <button className="mr-4 flex h-12 w-12 items-center justify-center rounded-full border-[1px]">
-        <MessageSquarePlusIcon className="text-primary" />
-      </button> */}
+      {suggestions ? (
+        <button
+          onClick={() => setSuggestionsVisible(true)}
+          className="mr-4 flex h-12 w-12 min-w-12 items-center justify-center gap-2 rounded-full border-[1px] lg:min-w-max lg:px-4"
+        >
+          <MessageSquarePlusIcon className="text-primary" />
+          <span className="hidden text-sm text-primary lg:flex">
+            Ver perguntas populares
+          </span>
+        </button>
+      ) : null}
 
       <input
         onChange={(e) => setQuestion(e.target.value)}
@@ -53,7 +79,7 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
       <button
         disabled={askAIMutation.isPending}
         onClick={handleSubmit}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-border dark:text-foreground"
+        className="flex h-12 w-12 min-w-12 items-center justify-center rounded-full bg-primary text-sm text-border dark:bg-border dark:text-foreground"
       >
         <SendHorizonalIcon size={18} />
       </button>
@@ -65,6 +91,47 @@ export default function ChatWriteBar(props: ChatWriteBarProps) {
           compará-las com o edital publicado oficialmente.
         </p>
       </div>
+
+      {suggestions ? (
+        <SuggestionsDrwaer
+          suggestions={suggestions}
+          open={suggestionsVisible}
+          setOpen={setSuggestionsVisible}
+          onAsk={onAskSuggestion}
+        />
+      ) : null}
     </section>
   );
 }
+
+interface SuggestionsDrwaerProps {
+  suggestions: Suggestion[];
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  onAsk: (text: string) => Promise<void>;
+}
+
+const SuggestionsDrwaer = (props: SuggestionsDrwaerProps) => {
+  const { suggestions, open, setOpen, onAsk } = props;
+
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerContent className="bg-card">
+        <div className="flex flex-col gap-2 p-6 lg:flex-row lg:justify-center">
+          {suggestions.map((suggestion) => (
+            <div
+              onClick={() => onAsk(suggestion.text)}
+              className="pointer flex flex-col gap-2 rounded-[8px] border-[1px] border-border px-5 py-4"
+              key={suggestion.id}
+            >
+              <p className="text-sm text-primary">{suggestion.text}</p>
+              <p className="text-[10px] italic text-hermys-acccent">
+                Clique para fazer a pergunta
+              </p>
+            </div>
+          ))}
+        </div>
+      </DrawerContent>
+    </Drawer>
+  );
+};

@@ -17,6 +17,7 @@ export interface KnowledgeFilterPayload {
 export interface ChatHistory {
   knowledge: Knowledge;
   history: History[];
+  suggestions: Suggestion[];
 }
 
 export interface History {
@@ -37,4 +38,11 @@ export interface Clerk {
   prompt: string;
   slug: string;
   chat_title: string;
+}
+
+export interface Suggestion {
+  text: string;
+  active: boolean;
+  knowledge_id: string;
+  id: string;
 }
