@@ -12,7 +12,7 @@ export async function listKnowledges(filter: KnowledgeFilterPayload) {
   const searchParams = new URLSearchParams(filter as Record<string, string>);
 
   const { data } = await api.get<Knowledge[]>(
-    `/host-knowledge?${searchParams.toString()}`,
+    `/host-knowledge/?${searchParams.toString()}`,
   );
 
   return data;
