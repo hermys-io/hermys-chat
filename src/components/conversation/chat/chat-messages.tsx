@@ -27,7 +27,7 @@ export default function ChatMessages(props: CharMessagesProps) {
     <ScrollArea className="h-full">
       <section
         id="chat-container"
-        className="relative flex h-full w-full flex-grow flex-col gap-6 overflow-hidden bg-card px-4 pb-24 pt-8"
+        className="index-1 relative flex h-full w-full flex-grow flex-col gap-6 overflow-hidden bg-card px-4 pb-24 pt-8"
       >
         {data
           ? data.map((item) => (
