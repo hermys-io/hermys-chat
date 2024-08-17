@@ -12,10 +12,10 @@ export default function ChatMessages(props: CharMessagesProps) {
   const { data, isLoading } = props;
 
   const scrollToBottom = () => {
-    const chatComponent = document.getElementById("chat-bottom");
+    const chatContainer = document.getElementById("chat-container"); // Substitua 'chat-container' pelo ID do contêiner de mensagens
 
-    if (chatComponent) {
-      chatComponent.scrollIntoView();
+    if (chatContainer) {
+      chatContainer.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   };
 
@@ -25,7 +25,10 @@ export default function ChatMessages(props: CharMessagesProps) {
 
   return (
     <ScrollArea className="h-full">
-      <section className="w-ful flex h-full flex-grow flex-col gap-6 overflow-hidden bg-card px-4 py-8">
+      <section
+        id="chat-container"
+        className="w-ful flex h-full flex-grow flex-col gap-6 overflow-hidden bg-card px-4 py-8"
+      >
         {data
           ? data.map((item) => (
               <ChatMessage
@@ -41,8 +44,6 @@ export default function ChatMessages(props: CharMessagesProps) {
             <div className="loader"></div>
           </div>
         ) : null}
-
-        <div id="chat-bottom" style={{ overflowAnchor: "auto", height: 1 }} />
       </section>
     </ScrollArea>
   );
