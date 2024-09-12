@@ -1,6 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import MenuChat from "./menu-chat";
 import { useListKnowledges } from "@/services/knowledge/query";
+import { useEffect } from "react";
 
 interface MenuChatsProps {
   onSelect: (conversationID: string) => void;
@@ -13,6 +14,12 @@ export default function MenuChats(props: MenuChatsProps) {
   const { current, clerkSlug, onSelect, clerkTitle } = props;
 
   const knowledgesQuery = useListKnowledges({ clerk_slug: clerkSlug });
+
+  useEffect(() => {
+    if (knowledgesQuery.data && knowledgesQuery.data.length == 1 && !current) {
+      onSelect(knowledgesQuery.data[0].id);
+    }
+  }, [current, knowledgesQuery.data, onSelect]);
 
   return (
     <section className="flex flex-col gap-2 p-4 lg:px-0">

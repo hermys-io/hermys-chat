@@ -21,12 +21,12 @@ export default function MenuChat(props: MenuChatProps) {
   };
 
   const buttonVariants = cva(
-    "flex cursor-pointer flex-col gap-4 transition duration-500 rounded-[8px] border-[1px] border-border bg-card p-6 lg:h-[72px] lg:flex-row lg:items-center lg:rounded-none lg:border-none lg:px-6 lg:py-0",
+    "flex cursor-pointer flex-row items-center gap-4 transition duration-500 rounded-[8px] border-[1px] border-border bg-card p-6 lg:h-[72px] lg:flex-row lg:items-center lg:rounded-none lg:border-none lg:px-6 lg:py-0",
     {
       variants: {
         variant: {
-          default: "lg:bg-background",
-          selected: "lg:bg-card",
+          default: "bg-background",
+          selected: "bg-card",
         },
       },
       defaultVariants: {
@@ -48,7 +48,7 @@ export default function MenuChat(props: MenuChatProps) {
           className="h-10 w-10 rounded-full bg-primary"
         />
         <span className="text-[10px] font-medium text-muted-foreground lg:hidden">
-          12:35
+          {/* 12:35 */}
         </span>
       </div>
 
@@ -59,7 +59,7 @@ export default function MenuChat(props: MenuChatProps) {
 
       <div className="flex h-full pt-4">
         <p className="hidden text-nowrap text-[10px] text-muted-foreground lg:block">
-          12:35 PM
+          {/* 12:35 PM */}
         </p>
       </div>
     </div>

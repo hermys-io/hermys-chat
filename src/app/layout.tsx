@@ -25,9 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Provider>
-        <body className={`${inter.className} light`}>{children}</body>
-      </Provider>
+      <body className={`${inter.className} light`}>
+        <Provider>{children}</Provider>
+      </body>
     </html>
   );
 }
